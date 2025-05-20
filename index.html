@@ -10,6 +10,11 @@
 <body>
   <canvas id="confetti-canvas"></canvas>
 
+  <audio id="birthday-music" autoplay loop>
+    <source src="happy-birthday-music-box(chosic.com).mp3" type="audio/mpeg" />Your browser does not support the audio element.
+  </audio>
+
+
   <!-- Message shown on small/mobile screens -->
   <div id="mobile-warning">
     <p>Please switch your browser to <strong>Desktop Site</strong> mode to view the birthday card 🎂</p>
@@ -111,6 +116,13 @@
     card.addEventListener("click", () => {
       if (!isTouchDevice) toggleCardFlip();
     });
+
+    document.addEventListener('click', () => {
+      const music = document.getElementById('birthday-music');
+      if (music.paused) {
+        music.play();
+      }
+    }, { once: true });
   </script>
   <div class="mobile-blocker">
   <to>Rey Buddi 🌝 <strong>Desktop Mode</strong> lo ki switch chay to view this greeting properly.</p>
