@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Birthday Card</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <canvas id="confetti-canvas"></canvas>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Birthday Card</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="confetti-canvas"></canvas>
 
+  <!-- Message shown on small/mobile screens -->
+  <div id="mobile-warning">
+    <p>Please switch your browser to <strong>Desktop Site</strong> mode to view the birthday card 🎂</p>
+  </div>
+
+  <!-- Main Birthday Card -->
+  <div class="card-container">
     <div class="card" id="card">
       <div class="outside">
         <div class="front">
@@ -23,71 +30,92 @@
         </div>
         <div class="back"></div>
       </div>
-
       <div class="inside">
         <p>
-          To my crazy little moon 🌝 <br />
-          Wishing you a super fun 💃🏻 <br />
-          Happy Birthday ra Buddi! ❤️‍🔥
+          To my crazy little moon🌝 <br />
+          Wishing you a super fun💃🏻 <br />
+          Happy Birthday ra Buddi!❤️‍🔥
         </p>
         <img src="img.jpg" alt="Birthday Wish" class="wish-image" />
       </div>
     </div>
+  </div>
 
-    <!-- Canvas Confetti from CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-    <!-- Confetti Trigger and Flip Script -->
-    <script>
-      const card = document.getElementById("card");
-      const outside = document.querySelector(".outside");
-      let isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-      let isFlipped = false;
+  <!-- Flip + Confetti Script -->
+  <script>
+    const card = document.getElementById("card");
+    const outside = document.querySelector(".outside");
+    const mobileWarning = document.getElementById("mobile-warning");
+    const cardContainer = document.querySelector(".card-container");
 
-      function launchConfetti() {
-        const duration = 3 * 1000;
-        const end = Date.now() + duration;
-
-        (function frame() {
-          confetti({
-            particleCount: 5,
-            angle: 60,
-            spread: 55,
-            origin: { x: 0 },
-          });
-          confetti({
-            particleCount: 5,
-            angle: 120,
-            spread: 55,
-            origin: { x: 1 },
-          });
-
-          if (Date.now() < end) {
-            requestAnimationFrame(frame);
-          }
-        })();
+    function checkViewport() {
+      // Show warning if screen width < 768 (common mobile breakpoint)
+      if (window.innerWidth < 768 && !window.matchMedia("(min-device-width: 768px)").matches) {
+        mobileWarning.style.display = "flex";
+        cardContainer.style.display = "none";
+      } else {
+        mobileWarning.style.display = "none";
+        cardContainer.style.display = "flex";
       }
+    }
 
-      function toggleCardFlip() {
-        if (isFlipped) {
-          outside.style.transform = "rotateY(0deg)";
-          card.style.transform = "rotate(0deg)";
-        } else {
-          outside.style.transform = "rotateY(-130deg)";
-          card.style.transform = "rotate(-5deg)";
-          launchConfetti();
+    checkViewport();
+    window.addEventListener("resize", checkViewport);
+
+    let isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    let isFlipped = false;
+
+    function launchConfetti() {
+      const duration = 3 * 1000;
+      const end = Date.now() + duration;
+
+      (function frame() {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
         }
-        isFlipped = !isFlipped;
-      }
+      })();
+    }
 
-      if (isTouchDevice) {
-        card.addEventListener("touchstart", toggleCardFlip);
+    function toggleCardFlip() {
+      if (isFlipped) {
+        outside.style.transform = "rotateY(0deg)";
+        card.style.transform = "rotate(0deg)";
+      } else {
+        outside.style.transform = "rotateY(-130deg)";
+        card.style.transform = "rotate(-5deg)";
+        launchConfetti();
       }
+      isFlipped = !isFlipped;
+    }
 
-      // Optional: also run confetti on mouse click (desktop)
-      card.addEventListener("click", () => {
-        if (!isTouchDevice) toggleCardFlip();
-      });
-    </script>
-  </body>
+    if (isTouchDevice) {
+      card.addEventListener("touchstart", toggleCardFlip);
+    }
+
+    card.addEventListener("click", () => {
+      if (!isTouchDevice) toggleCardFlip();
+    });
+  </script>
+  <div class="mobile-blocker">
+  <p>Please switch to <strong>Desktop Mode</strong> in your browser to view this greeting properly.</p>
+  <p>(Tap the browser menu ⋮ and choose "Desktop site")</p>
+</div>
+
+</body>
 </html>

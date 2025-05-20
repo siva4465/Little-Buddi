@@ -1,3 +1,4 @@
+/* Core Reset */
 * {
   padding: 0;
   margin: 0;
@@ -7,6 +8,41 @@
 
 body {
   background-color: #000000;
+}
+
+/* Mobile blocker overlay */
+.mobile-blocker {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  font-size: 18px;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Show blocker on small screens */
+@media (max-width: 768px) {
+  .mobile-blocker {
+    display: flex;
+  }
+
+  .card {
+    display: none !important;
+  }
+
+  #confetti-canvas {
+    display: none !important;
+  }
 }
 
 /* Card container */
@@ -21,9 +57,10 @@ body {
   bottom: 0;
   perspective: 1200px;
   transition: 1s;
+  display: block;
 }
 
-/* Hover effect for desktops only */
+/* Desktop-only hover */
 @media (hover: hover) {
   .card:hover {
     transform: rotate(-5deg);
@@ -42,6 +79,7 @@ body {
   transform: rotateY(-130deg);
 }
 
+/* Inside and Outside common styles */
 .outside,
 .inside {
   height: 100%;
@@ -50,7 +88,6 @@ body {
   left: 50.1%;
 }
 
-/* Inside panel (right side) */
 .inside {
   background: linear-gradient(to right, #ffffff, #ffffff 30%);
   line-height: 2.2;
@@ -78,7 +115,7 @@ body {
   box-shadow: 0 0 3px #333;
 }
 
-/* Outside panel (left side) */
+/* Outside panel (left) */
 .outside {
   transform-style: preserve-3d;
   z-index: 1;
@@ -113,7 +150,7 @@ body {
   color: #000046;
 }
 
-/* Cake layers */
+/* Cake */
 .cake {
   width: 100%;
   position: absolute;
@@ -178,6 +215,7 @@ body {
   transform: rotate(45deg);
   left: -1px;
 }
+
 #confetti-canvas {
   position: fixed;
   top: 0;
